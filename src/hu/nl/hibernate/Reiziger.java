@@ -11,6 +11,7 @@ public class Reiziger {
     private Date gbdatum;
 
 
+    public Reiziger(){ }
     public Reiziger(int rID, String vl, String tv, String an, Date datum) {
         reizigerID = rID;
         voorletters = vl;
