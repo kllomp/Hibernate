@@ -9,8 +9,11 @@
         <property name="connection.url">jdbc:oracle:thin:@localhost:1521/XEPDB1</property>
         <property name="connection.username">OV</property>
         <property name="connection.password">test</property>
-        <property name="connection.driver_class">oracle.jdbc.driver.OracleDriver</property>  
-    <mapping resource="Log.hbm.xml"/>
+        <property name="connection.driver_class">oracle.jdbc.driver.OracleDriver</property>
     <mapping resource="Reiziger.hbm.xml"/>
+    <mapping resource="OVchipkaart.hbm.xml"/>
+    
+    
     </session-factory>
 </hibernate-configuration> 
+
