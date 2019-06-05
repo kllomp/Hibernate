@@ -9,8 +9,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 public class OVChipkaartDAOImpl extends Main implements OVChipkaartDAO {
-	
-	// Find All method
+
 	public void listOv() {
 		  Session session = getFactory().openSession();
 		  Transaction t = null;

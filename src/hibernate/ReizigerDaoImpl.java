@@ -10,7 +10,6 @@ import org.hibernate.Transaction;
 
 public class ReizigerDaoImpl extends Main implements ReizigerDao {
 
-	// Find All method
 	public void listReizigers() {
 		  Session session = getFactory().openSession();
 		  Transaction t = null;
@@ -27,8 +26,6 @@ public class ReizigerDaoImpl extends Main implements ReizigerDao {
 				  System.out.println("Achternaam: " + reiziger.getAchternaam());
 				  System.out.println("Geboortedatum: " + reiziger.getGbdatum());
 				  System.out.println("OVkaarten: " + reiziger.getOvchipkaarten().toString() + "\n	");
-				  // ��n op veel relatie, hij werkt! Ik maak geen gebruik van annotaties, zie XML Reiziger.hbm.xml voor de <one-to-many> tag.
-				  // Bij iedere reiziger worden de bijbehorende OV-chipkaarten meegegeven.
 				  
 			  }
 			  t.commit();
