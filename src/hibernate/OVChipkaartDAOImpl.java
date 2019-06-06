@@ -35,7 +35,7 @@ public class OVChipkaartDAOImpl extends Main implements OVChipkaartDAO {
 		  }  
 	  }
 	
-	public OVchipkaart findOvById(int id) {
+	public OVchipkaart findOvById(OVchipkaart chip) {
 		  Session session = getFactory().openSession();
 		  Transaction t = null;
 		  
@@ -43,7 +43,7 @@ public class OVChipkaartDAOImpl extends Main implements OVChipkaartDAO {
 		  
 		  try {
 			  t = session.beginTransaction();
-				  OVchipkaart ovkaart = (OVchipkaart) session.get(OVchipkaart.class, id);
+				  OVchipkaart ovkaart = (OVchipkaart) session.get(OVchipkaart.class, chip.getKaartnummer());
 
 				  System.out.println("Kaartnummer: " + ovkaart.getKaartnummer());
 				  System.out.println("Geldig tot: " + ovkaart.getGeldig());
@@ -62,14 +62,14 @@ public class OVChipkaartDAOImpl extends Main implements OVChipkaartDAO {
 		return ov;  
 	  }
 	
-	 public Integer addOv(int id, double sal, int klasse, Date geldigtot, int reizigerid) {
+	 public Integer addOv(OVchipkaart chip) {
 		  Session session = getFactory().openSession();
 		  Transaction t = null;
 		  Integer ovid = null;
 		  
 		  try {
 			  t = session.beginTransaction();
-			  OVchipkaart ovkaart = new OVchipkaart(id, sal, klasse, geldigtot, reizigerid);
+			  OVchipkaart ovkaart = new OVchipkaart(chip.getKaartnummer(), chip.getSaldo(), chip.getKlasse(), chip.getGeldig(), chip.getReizigerid());
 			  ovid = (Integer) session.save(ovkaart);
 			  t.commit();
 		  } catch (HibernateException e) {
@@ -82,13 +82,13 @@ public class OVChipkaartDAOImpl extends Main implements OVChipkaartDAO {
 	  }
 	 
 	 
-	 public void updateOv(int id, OVchipkaart updatedOv) {
+	 public void updateOv(OVchipkaart updatedOv) {
 		  Session session = getFactory().openSession();
 		  Transaction t = null;
 		  
 		  try {
 			  t = session.beginTransaction();
-			  OVchipkaart ovkaart = (OVchipkaart) session.get(OVchipkaart.class, id);
+			  OVchipkaart ovkaart = (OVchipkaart) session.get(OVchipkaart.class, updatedOv.getKaartnummer());
 			  ovkaart.setSaldo(updatedOv.getSaldo());
 			  ovkaart.setGeldig(updatedOv.getGeldig());
 			  ovkaart.setKlasse(updatedOv.getKlasse());
@@ -104,13 +104,13 @@ public class OVChipkaartDAOImpl extends Main implements OVChipkaartDAO {
 		  }
 	  }
 	 
-	 public void deleteOv(int id) {
+	 public void deleteOv(OVchipkaart chip) {
 		  Session session = getFactory().openSession();
 		  Transaction t = null;
 		  
 		  try {
 			  t = session.beginTransaction();
-			  OVchipkaart ovkaart = (OVchipkaart) session.get(OVchipkaart.class, id);
+			  OVchipkaart ovkaart = (OVchipkaart) session.get(OVchipkaart.class, chip.getKaartnummer());
 			  
 			  session.delete(ovkaart);
 			  t.commit();	  

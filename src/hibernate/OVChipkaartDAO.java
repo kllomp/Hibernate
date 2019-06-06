@@ -5,10 +5,10 @@ import java.sql.Date;
 public interface OVChipkaartDAO {
 	
 	public void listOv();
-	public OVchipkaart findOvById(int id);
-	public Integer addOv(int id, double sal, int klasse, Date geldigtot, int reizigerid);
-	public void updateOv(int id, OVchipkaart updatedOv);
-	public void deleteOv(int id);
+	public OVchipkaart findOvById(OVchipkaart chip);
+	public Integer addOv(OVchipkaart chip);
+	public void updateOv(OVchipkaart updatedOv);
+	public void deleteOv(OVchipkaart chip);
 	
 }
 

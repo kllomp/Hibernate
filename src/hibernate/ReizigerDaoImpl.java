@@ -37,15 +37,15 @@ public class ReizigerDaoImpl extends Main implements ReizigerDao {
 		  }  
 	  }
 	
-	public Reiziger findReizigerById(int id) {
+	public Reiziger findReizigerById(Reiziger reiziger) {
 		  Session session = getFactory().openSession();
 		  Transaction t = null;
 		  
-		  Reiziger reiziger = null;
+		  Reiziger reizigers = null;
 		  
 		  try {
 			  t = session.beginTransaction();
-				  Reiziger r = (Reiziger) session.get(Reiziger.class, id);
+				  Reiziger r = (Reiziger) session.get(Reiziger.class, reiziger.getReizigerid());
 				  
 				  System.out.println("Reizigerid: " + r.getReizigerid());
 				  System.out.println("Voorletters: " + r.getVoorletter());
@@ -53,9 +53,9 @@ public class ReizigerDaoImpl extends Main implements ReizigerDao {
 				  System.out.println("Achternaam: " + r.getAchternaam());
 				  System.out.println("Geboortedatum: " + r.getGbdatum());
 				  System.out.println("OVkaarten: " + r.getOvchipkaarten().toString() + "\n	");
-				  
-				  
-				  reiziger = r;
+
+
+			  reizigers = r;
 			  t.commit();
 		  } catch (HibernateException e) {
 			  if(t != null) t.rollback();
@@ -63,17 +63,17 @@ public class ReizigerDaoImpl extends Main implements ReizigerDao {
 		  } finally {
 			  session.close();
 		  }
-		return reiziger;  
+		return reizigers;
 	  }
 	
-	 public Integer addReiziger(int id, String vl, String tvoegsel, String anaam, Date gbdatum) {
+	 public Integer addReiziger(Reiziger r) {
 		  Session session = getFactory().openSession();
 		  Transaction t = null;
 		  Integer reizigerid = null;
 		  
 		  try {
 			  t = session.beginTransaction();
-			  Reiziger reiziger = new Reiziger(id, vl, tvoegsel, anaam, gbdatum);
+			  Reiziger reiziger = new Reiziger(r.getReizigerid(), r.getVoorletter(), r.getTussenvoegsel(), r.getAchternaam(), r.getGbdatum());
 			  reizigerid = (Integer) session.save(reiziger);
 			  t.commit();
 		  } catch (HibernateException e) {
@@ -85,13 +85,13 @@ public class ReizigerDaoImpl extends Main implements ReizigerDao {
 		  return reizigerid;
 	  }
 	 
-	 public void updateReiziger(int id, Reiziger updatedReiziger) {
+	 public void updateReiziger(Reiziger updatedReiziger) {
 		  Session session = getFactory().openSession();
 		  Transaction t = null;
 		  
 		  try {
 			  t = session.beginTransaction();
-			  Reiziger reiziger = (Reiziger) session.get(Reiziger.class, id);
+			  Reiziger reiziger = (Reiziger) session.get(Reiziger.class, updatedReiziger.getReizigerid());
 			  reiziger.setVoorletter(updatedReiziger.getVoorletter());
 			  reiziger.setTussenvoegsel(updatedReiziger.getTussenvoegsel());
 			  reiziger.setAchternaam(updatedReiziger.getAchternaam());
@@ -107,13 +107,13 @@ public class ReizigerDaoImpl extends Main implements ReizigerDao {
 		  }
 	  }
 	 
-	 public void deleteReiziger(int id) {
+	 public void deleteReiziger(Reiziger r) {
 		  Session session = getFactory().openSession();
 		  Transaction t = null;
 		  
 		  try {
 			  t = session.beginTransaction();
-			  Reiziger reiziger = (Reiziger) session.get(Reiziger.class, id);
+			  Reiziger reiziger = (Reiziger) session.get(Reiziger.class, r.getReizigerid());
 			  
 			  session.delete(reiziger);
 			  t.commit();	  
