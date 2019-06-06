@@ -94,8 +94,11 @@ public class Reiziger {
         ovchipkaarten.add(ov);
     }
 
-    public String toString() {
-        return "Naam: " + getNaam();
-    }
+//    public String toString() {
+//        return "Naam: " + getNaam();
+//    }
 
+    public String toString(){
+        return "Reiziger " + getReizigerid() + " met naam " + getNaam() + " is geboren op " + getGbdatum() + " " + getOvchipkaarten() + "\n";
+    }
 }

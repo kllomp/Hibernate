@@ -26,6 +26,13 @@ public class OVchipkaart {
         this.reizigerid = reizigerid;
     }
 
+    public OVchipkaart(int id, double sal, int kl, Date gel) {
+        this.kaartnummer = id;
+        this.saldo = sal;
+        this.klasse = kl;
+        this.geldig = gel;
+    }
+
     public OVchipkaart() {
     }
 
@@ -78,7 +85,13 @@ public class OVchipkaart {
         klasse = kl;
     }
 
-    public String toString() {
-        return "Kaartnummers: " + kaartnummer + ", ";
+    public String toString(){
+        return "De huidige pas met kaartnummer " + getKaartnummer() +  " is geldig tot " + getGeldig() +  " en heeft de volgende klasse "
+                + getKlasse() +  " met de huidige saldo " + getSaldo() + "\n";
+    }
+
+    public String toString2() {
+        return "De huidige pas met kaartnummer " + getKaartnummer() +  " is geldig tot " + getGeldig() +  " en heeft de volgende klasse "
+                + getKlasse() +  " met de huidige saldo " + getSaldo() +  " en de eigenaar is " + eigenaar.getNaam() + "\n";
     }
 }

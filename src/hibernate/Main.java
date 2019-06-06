@@ -22,40 +22,40 @@ public class Main {
 
 
         Reiziger newReiziger = new Reiziger(11, "N", "", "Klomp", Date.valueOf("1999-01-19"));
-        Reiziger updatedReiziger = new Reiziger(11, "S", "", "Jovanovic", Date.valueOf("1998-02-14"));
 
         OVchipkaart newOv = new OVchipkaart(56789, 13.80, 1, Date.valueOf("2023-05-1"), 3);
-        OVchipkaart updatedOv = new OVchipkaart(56789, 35.30, 2, Date.valueOf("2025-01-19"), 3);
 
         System.out.println("\nLijst van OV Chipkaarten\n");
-        OVDAO.listOv();
+        System.out.println(OVDAO.listOv());
 
         System.out.println("\nToevoeging van OV Chipkaart\n");
         OVDAO.addOv(newOv);
-        OVDAO.findOvById(newOv);
+        System.out.println(OVDAO.findOvById(newOv));
 
         System.out.println("\nUpdate OV Chipkaart\n");
-        OVDAO.updateOv(updatedOv);
-        OVDAO.findOvById(updatedOv);
+        newOv.setSaldo(50);
+        OVDAO.updateOv(newOv);
+        System.out.println(OVDAO.findOvById(newOv));
 
         System.out.println("\nVerwijder OV Chipkaart\n");
-        OVDAO.deleteOv(updatedOv);
-        OVDAO.listOv();
+        OVDAO.deleteOv(newOv);
+        System.out.println(OVDAO.listOv());
 
         System.out.println("\nLijst van Reizigers\n");
-        DAO.listReizigers();
+        System.out.println(DAO.listReizigers());
 
         System.out.println("\nToevoeging van Reiziger\n");
         DAO.addReiziger(newReiziger);
-        DAO.findReizigerById(updatedReiziger);
+        System.out.println(DAO.findReizigerById(newReiziger));
 
         System.out.println("\nUpdate van Reiziger\n");
-        DAO.updateReiziger(updatedReiziger);
-        DAO.findReizigerById(updatedReiziger);
+        newReiziger.setAchternaam("Jovanovic");
+        DAO.updateReiziger(newReiziger);
+        System.out.println(DAO.findReizigerById(newReiziger));
 
         System.out.println("\nDelete van Reiziger\n");
-        DAO.deleteReiziger(updatedReiziger);
-        DAO.listReizigers();
+        DAO.deleteReiziger(newReiziger);
+        System.out.println(DAO.listReizigers());
 
         factory.close();
     }

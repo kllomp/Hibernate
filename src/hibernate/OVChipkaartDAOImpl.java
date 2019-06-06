@@ -1,6 +1,7 @@
 package hibernate;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -10,7 +11,8 @@ import org.hibernate.Transaction;
 
 public class OVChipkaartDAOImpl extends Main implements OVChipkaartDAO {
 
-	public void listOv() {
+	public String listOv() {
+		List<String> Kaarten = new ArrayList<String>();
 		  Session session = getFactory().openSession();
 		  Transaction t = null;
 		  
@@ -19,47 +21,37 @@ public class OVChipkaartDAOImpl extends Main implements OVChipkaartDAO {
 			  List ovkaarten = session.createQuery("FROM hibernate.OVchipkaart").list();
 			  for (Iterator iterator = ovkaarten.iterator(); iterator.hasNext();) {
 				  OVchipkaart ovkaart = (OVchipkaart) iterator.next();
-				  System.out.println("Kaartnummer: " + ovkaart.getKaartnummer());
-				  System.out.println("Geldig tot: " + ovkaart.getGeldig());
-				  System.out.println("Klasse: " + ovkaart.getKlasse());
-				  System.out.println("Saldo: " + ovkaart.getSaldo());
-				  System.out.println(ovkaart.getEigenaar().toString() + "\n");
-
+				  OVchipkaart kaart = new OVchipkaart(ovkaart.getKaartnummer(),  ovkaart.getSaldo(), ovkaart.getKlasse(), ovkaart.getGeldig(), ovkaart.getEigenaar());
+				  String kaart2 = kaart.toString2();
+				  Kaarten.add(kaart2);
 			  }
 			  t.commit();
 		  } catch (HibernateException e) {
 			  if(t != null) t.rollback();
 			  e.printStackTrace();
-		  } finally {
-			  session.close();
-		  }  
+		  }
+		  return Kaarten + "\n";
 	  }
 	
-	public OVchipkaart findOvById(OVchipkaart chip) {
-		  Session session = getFactory().openSession();
-		  Transaction t = null;
-		  
-		  OVchipkaart ov = null;
+	public String findOvById(OVchipkaart chip) {
+		List<String> Kaarten = new ArrayList<String>();
+		Session session = getFactory().openSession();
+		Transaction t = null;
 		  
 		  try {
 			  t = session.beginTransaction();
 				  OVchipkaart ovkaart = (OVchipkaart) session.get(OVchipkaart.class, chip.getKaartnummer());
 
-				  System.out.println("Kaartnummer: " + ovkaart.getKaartnummer());
-				  System.out.println("Geldig tot: " + ovkaart.getGeldig());
-				  System.out.println("Klasse: " + ovkaart.getKlasse());
-				  System.out.println("Saldo: " + ovkaart.getSaldo());
-				  System.out.println(ovkaart.getEigenaar().toString() + "\n");
-				  
-				  ov = ovkaart;
+			  OVchipkaart kaart = new OVchipkaart(ovkaart.getKaartnummer(),  ovkaart.getSaldo(), ovkaart.getKlasse(), ovkaart.getGeldig(), ovkaart.getEigenaar());
+			  String kaart2 = kaart.toString2();
+			  Kaarten.add(kaart2);
+
 			  t.commit();
 		  } catch (HibernateException e) {
 			  if(t != null) t.rollback();
 			  e.printStackTrace();
-		  } finally {
-			  session.close();
 		  }
-		return ov;  
+		return Kaarten +  "\n";
 	  }
 	
 	 public Integer addOv(OVchipkaart chip) {
@@ -88,13 +80,8 @@ public class OVChipkaartDAOImpl extends Main implements OVChipkaartDAO {
 		  
 		  try {
 			  t = session.beginTransaction();
-			  OVchipkaart ovkaart = (OVchipkaart) session.get(OVchipkaart.class, updatedOv.getKaartnummer());
-			  ovkaart.setSaldo(updatedOv.getSaldo());
-			  ovkaart.setGeldig(updatedOv.getGeldig());
-			  ovkaart.setKlasse(updatedOv.getKlasse());
-			  ovkaart.setReizigerid(updatedOv.getReizigerid());
 			  
-			  session.update(ovkaart);
+			  session.update(updatedOv);
 			  t.commit();
 		  } catch (HibernateException e) {
 			  if (t != null) t.rollback();

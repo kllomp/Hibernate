@@ -1,6 +1,7 @@
 package hibernate;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -10,60 +11,50 @@ import org.hibernate.Transaction;
 
 public class ReizigerDaoImpl extends Main implements ReizigerDao {
 
-	public void listReizigers() {
+	public List<Reiziger> listReizigers() {
+		List<Reiziger> Reizigers = new ArrayList<Reiziger>();
 		  Session session = getFactory().openSession();
 		  Transaction t = null;
-		  
+
 		  try {
 			  t = session.beginTransaction();
 			  List reizigers = session.createQuery("FROM hibernate.Reiziger").list();
 			  for (Iterator iterator = reizigers.iterator(); iterator.hasNext();) {
 				  Reiziger reiziger = (Reiziger) iterator.next();
-				  
-				  System.out.println("Reizigerid: " + reiziger.getReizigerid());
-				  System.out.println("Voorletters: " + reiziger.getVoorletter());
-				  System.out.println("Tussenvoegsel: " + reiziger.getTussenvoegsel());
-				  System.out.println("Achternaam: " + reiziger.getAchternaam());
-				  System.out.println("Geboortedatum: " + reiziger.getGbdatum());
-				  System.out.println("OVkaarten: " + reiziger.getOvchipkaarten().toString() + "\n	");
-				  
+
+				  Reiziger Reiziger = new Reiziger(reiziger.getReizigerid(), reiziger.getVoorletter(), reiziger.getTussenvoegsel()
+				  , reiziger.getAchternaam(), reiziger.getGbdatum());
+				  Reiziger.setOvchipkaarten(reiziger.getOvchipkaarten());
+				  Reizigers.add(Reiziger);
 			  }
 			  t.commit();
 		  } catch (HibernateException e) {
 			  if(t != null) t.rollback();
 			  e.printStackTrace();
-		  } finally {
-			  session.close();
-		  }  
+		  }
+		  return Reizigers;
 	  }
 	
-	public Reiziger findReizigerById(Reiziger reiziger) {
+	public List<Reiziger> findReizigerById(Reiziger reiziger) {
+		List<Reiziger> Reizigers = new ArrayList<Reiziger>();
 		  Session session = getFactory().openSession();
 		  Transaction t = null;
-		  
-		  Reiziger reizigers = null;
 		  
 		  try {
 			  t = session.beginTransaction();
 				  Reiziger r = (Reiziger) session.get(Reiziger.class, reiziger.getReizigerid());
-				  
-				  System.out.println("Reizigerid: " + r.getReizigerid());
-				  System.out.println("Voorletters: " + r.getVoorletter());
-				  System.out.println("Tussenvoegsel: " + r.getTussenvoegsel());
-				  System.out.println("Achternaam: " + r.getAchternaam());
-				  System.out.println("Geboortedatum: " + r.getGbdatum());
-				  System.out.println("OVkaarten: " + r.getOvchipkaarten().toString() + "\n	");
 
+			  Reiziger Reiziger = new Reiziger(r.getReizigerid(), r.getVoorletter(), r.getTussenvoegsel()
+					  , r.getAchternaam(), r.getGbdatum());
+			  Reiziger.setOvchipkaarten(r.getOvchipkaarten());
+			  Reizigers.add(Reiziger);
 
-			  reizigers = r;
 			  t.commit();
 		  } catch (HibernateException e) {
 			  if(t != null) t.rollback();
 			  e.printStackTrace();
-		  } finally {
-			  session.close();
 		  }
-		return reizigers;
+		return Reizigers;
 	  }
 	
 	 public Integer addReiziger(Reiziger r) {
@@ -91,13 +82,8 @@ public class ReizigerDaoImpl extends Main implements ReizigerDao {
 		  
 		  try {
 			  t = session.beginTransaction();
-			  Reiziger reiziger = (Reiziger) session.get(Reiziger.class, updatedReiziger.getReizigerid());
-			  reiziger.setVoorletter(updatedReiziger.getVoorletter());
-			  reiziger.setTussenvoegsel(updatedReiziger.getTussenvoegsel());
-			  reiziger.setAchternaam(updatedReiziger.getAchternaam());
-			  reiziger.setGbdatum(updatedReiziger.getGbdatum());
-			  
-			  session.update(reiziger);
+
+			  session.update(updatedReiziger);
 			  t.commit();
 		  } catch (HibernateException e) {
 			  if (t != null) t.rollback();
